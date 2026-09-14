@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para kay Jannah</title>
+    <link rel="stylesheet" href="calc.css">
+</head>
+<body>
+    <div id="calc_box">
+        <input type="text" id="display_screen" readonly>
+
+        <div class="buttons">
+            <button onclick="clearDisplay()" class="operator">AC</button>
+            <button onclick="deleteLast()" class="operator">DEL</button>
+            <button onclick="appendGiven('%')" class="operator">%</button>
+            <button onclick="appendGiven('/')" class="operator">/</button>
+
+            <button onclick="appendGiven(7)">7</button>
+            <button onclick="appendGiven(8)">8</button>
+            <button onclick="appendGiven(9)">9</button>
+            <button onclick="appendGiven('*')" class="operator">*</button>
+
+            <button onclick="appendGiven(4)">4</button>
+            <button onclick="appendGiven(5)">5</button>
+            <button onclick="appendGiven(6)">6</button>
+            <button onclick="appendGiven('-')" class="operator">-</button>
+
+            <button onclick="appendGiven(1)">1</button>
+            <button onclick="appendGiven(2)">2</button>
+            <button onclick="appendGiven(3)">3</button>
+            <button onclick="appendGiven('+')" class="operator">+</button>
+
+            <button onclick="appendGiven(0)">0</button>
+            <button onclick="appendGiven('.')">.</button>
+            <button onclick="calculate()" id="equals" class="operator">=</button>
+        </div>
+    </div>
+
+    <audio src="lifetime.mp3" type="audio/mp3" id="lifetime"></audio>
+</body>
+
+    <script>
+        function appendGiven(Given) {
+            document.getElementById("display_screen").value += Given;
+        }
+
+        function clearDisplay() {
+            document.getElementById("display_screen").value = "";
+        }
+
+        function deleteLast(){
+            let current_display = document.getElementById("display_screen");
+            current_display.value = current_display.value.slice(0, -1);
+        }
+
+        function calculate() {
+            try {
+                let math_problem = document.getElementById("display_screen").value;
+
+                if (math_problem==="2+2"){
+                    clearDisplay();
+                    playSongWithLyrics();
+                }
+                else{
+                let result = eval(math_problem);
+                document.getElementById("display_screen").value = result;}
+
+            } 
+            catch (error) {
+                document.getElementById("display_screen").value = "Error";
+            }
+        }
+
+        function playSongWithLyrics() {
+            const song = document.getElementById("lifetime");
+            const display = document.getElementById("display_screen");
+            display.style.textAlign = "center";
+            display.style.fontStyle = "italic";
+            display.style.fontWeight = "bolder";
+            display.classList.add("change_bg");
+            const lyrics = [
+                { text: "Smoke and ashes", time: 0 },
+                { text: "from these letters", time: 2000 },
+                { text: "I'm burning", time: 3500 },
+                { text: "No fairy-tale ending", time: 5000 },
+                { text: "if there was", time: 7000 },
+                { text: "no beginning", time: 8500 },
+                { text: "Is it even", time: 10500 },
+                { text: "worth it", time: 12000 },
+                { text: "to reminisce?", time: 13000 },
+                { text: "How do you grieve", time: 14000 },
+                { text: "for a love", time: 16000 },
+                { text: "that did not even exist?", time: 17000 },
+            ];
+
+            song.play();
+
+            lyrics.forEach(line => {
+                display.classList.add("fadeInOut");
+                setTimeout(() => {
+                    display.value = line.text;
+                }, line.time);
+            });
+
+             song.onended = () => {
+            display.value = "";
+            display.style.textAlign = "left";
+            display.style.fontStyle = "normal";
+            display.style.fontWeight = "normal";
+                    display.classList.remove("change_bg");
+                };
+        }
+    </script>
+</html>
